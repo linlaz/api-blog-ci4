@@ -2,6 +2,9 @@
 
 namespace Config;
 
+use App\Validation\CategoryExist;
+use App\Validation\StatusMustPublishedOrDraft;
+use App\Validation\UserExist;
 use CodeIgniter\Config\BaseConfig;
 use CodeIgniter\Validation\StrictRules\CreditCardRules;
 use CodeIgniter\Validation\StrictRules\FileRules;
@@ -25,6 +28,9 @@ class Validation extends BaseConfig
         FormatRules::class,
         FileRules::class,
         CreditCardRules::class,
+        CategoryExist::class,
+        UserExist::class,
+        StatusMustPublishedOrDraft::class,
     ];
 
     /**

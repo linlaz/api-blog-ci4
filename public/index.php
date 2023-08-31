@@ -55,7 +55,8 @@ $app = Config\Services::codeigniter();
 $app->initialize();
 $context = is_cli() ? 'php-cli' : 'web';
 $app->setContext($context);
-
+header('Access-Control-Allow-Origin: *');
+Header('Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE');
 /*
  *---------------------------------------------------------------
  * LAUNCH THE APPLICATION

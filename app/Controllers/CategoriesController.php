@@ -3,12 +3,14 @@
 namespace App\Controllers;
 
 use App\Models\Category;
+use App\Traits\ResponseAllow;
 use CodeIgniter\API\ResponseTrait;
 use CodeIgniter\RESTful\ResourceController;
 
 class CategoriesController extends ResourceController
 {
     use ResponseTrait;
+    USE ResponseAllow;
 
     public $categories;
     public function __construct() {
@@ -33,7 +35,7 @@ class CategoriesController extends ResourceController
 			'messages' => 'categories list',
 			'data' => $data
 		];
-        return $this->respond($response);
+        return $this->responseAllow($response);
     }
 
     /**
@@ -61,7 +63,7 @@ class CategoriesController extends ResourceController
 				'data' => []
 			];
         }
-        return $this->respond($response);
+        return $this->responseAllow($response);
     }
 
     /**
@@ -71,13 +73,17 @@ class CategoriesController extends ResourceController
      */
     public function create()
     {
-        $rules = [
+        $valid = $this->validate([
             'name' => 'required',
-            'status' => 'required'
-        ];
-        if (!$this->validate($rules)) {
+            'status' => 'required|statusMustPublishedOrDraft'
+        ],[
+            'status'=> [
+                'statusMustPublishedOrDraft' => 'format status false'
+            ]
+        ]);
+        if (!$valid) {
             $response = [
-                'status' => 500,
+                'status' => 400,
                 'error' => true,
                 'message' => $this->validator->getErrors(),
                 'data' => []
@@ -96,7 +102,7 @@ class CategoriesController extends ResourceController
 			];
         }
        
-        return $this->respondCreated($response, 'category created successfully');
+        return $this->responseAllow($response);
     }
 
     /**
@@ -108,7 +114,6 @@ class CategoriesController extends ResourceController
     {
         $rules = [
             'name' => 'required',
-            'slug' => 'required|is_unique[categories.slug,id,'.$id.']',
             'status' => 'required'
         ];   
         if (!$this->validate($rules)) {
@@ -123,7 +128,6 @@ class CategoriesController extends ResourceController
             if (!empty($datas)) {
                 $data = [
                     'name' => $this->request->getVar('name'),
-                    'slug' => $this->request->getVar('slug'),
                     'status' => $this->request->getVar('status'),
                 ];
                 $this->categories->update($id,$data);
@@ -142,7 +146,7 @@ class CategoriesController extends ResourceController
 				];
             }
          }
-         return $this->respondUpdated($response);
+         return $this->responseAllow($response);
     }
 
     /**
@@ -171,6 +175,6 @@ class CategoriesController extends ResourceController
 				'data' => []
 			];
         }
-        return $this->respondDeleted($response);
+        return $this->responseAllow($response);
     }
 }

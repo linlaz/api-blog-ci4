@@ -22,6 +22,7 @@ class Category extends Model
 
     protected $allowCallbacks = true;
     protected $beforeInsert   = ['slug'];
+    protected $beforeUpdate = ['slug'];
 
     public function slug($data){
         $data['data']['slug'] = str_replace(' ','-', strtolower($data['data']['name']));

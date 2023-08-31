@@ -4,11 +4,13 @@ namespace App\Controllers;
 
 use CodeIgniter\RESTful\ResourceController;
 use App\Models\User;
+use App\Traits\ResponseAllow;
 use CodeIgniter\API\ResponseTrait;
 
 class UserController extends ResourceController
 {
     use ResponseTrait;
+    use ResponseAllow;
 
     public $user;
     public function __construct()
@@ -28,7 +30,7 @@ class UserController extends ResourceController
 			'messages' => 'user list',
 			'data' => $this->user->findAll()
 		];
-        return $this->respond($response);
+        return $this->responseAllow($response);
     }
 
     /**
@@ -56,16 +58,7 @@ class UserController extends ResourceController
 				'data' => []
 			];
         }
-        return $this->respond($response);
-    }
-    /**
-     * Create a new resource object, from "posted" parameters
-     *
-     * @return mixed
-     */
-    public function create()
-    {
-        
+        return $this->responseAllow($response);
     }
     /**
      * Add or update a model resource, from "posted" properties
@@ -110,7 +103,7 @@ class UserController extends ResourceController
             }
         }
        
-        return $this->respondUpdated($response);
+        return $this->responseAllow($response);
     }
 
     /**
@@ -139,6 +132,6 @@ class UserController extends ResourceController
 				'data' => []
 			];
         }
-        return $this->respondDeleted($response);
+        return $this->responseAllow($response);
     }
 }

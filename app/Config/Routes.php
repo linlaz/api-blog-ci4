@@ -29,6 +29,7 @@ $routes->set404Override();
 
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
+$routes->get('api-docs', 'Swagger::index');
 $routes->group("api", function ($routes) {
     $routes->post("login", "AuthController::login");
     $routes->post("register", "AuthController::register");
@@ -40,16 +41,16 @@ $routes->group("api", function ($routes) {
     });
     $routes->group("categories", function ($routes) {
         $routes->get("/", "CategoriesController::index");
-        $routes->post("/", "CategoriesController::create");
-        $routes->post("(:num)", "CategoriesController::update/$1");
-        $routes->delete("(:num)", "CategoriesController::delete/$1");
+        $routes->post("/", "CategoriesController::create", ['filter' => 'authFilter']);
+        $routes->post("(:num)", "CategoriesController::update/$1", ['filter' => 'authFilter']);
+        $routes->delete("(:num)", "CategoriesController::delete/$1", ['filter' => 'authFilter']);
         $routes->get("(:num)", "CategoriesController::show/$1");
     });
-    $routes->group("blog", function ($routes) {
+    $routes->group("blogs", function ($routes) {
         $routes->get("/", "BlogController::index");
-        $routes->post("/", "BlogController::create");
-        $routes->post("(:num)", "BlogController::update/$1");
-        $routes->delete("(:num)", "BlogController::delete/$1");
+        $routes->post("/", "BlogController::create", ['filter' => 'authFilter']);
+        $routes->post("(:segment)", "BlogController::update/$1", ['filter' => 'authFilter']);
+        $routes->delete("(:num)", "BlogController::delete/$1", ['filter' => 'authFilter']);
         $routes->get("(:num)", "BlogController::show/$1");
     });
 });

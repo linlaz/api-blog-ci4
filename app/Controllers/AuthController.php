@@ -6,10 +6,13 @@ use App\Models\User;
 use Firebase\JWT\JWT;
 use CodeIgniter\API\ResponseTrait;
 use App\Controllers\BaseController;
+use App\Traits\ResponseAllow;
 
 class AuthController extends BaseController
 {
     use ResponseTrait;
+    use ResponseAllow;
+
     public $user;
     public function __construct()
     {
@@ -23,13 +26,25 @@ class AuthController extends BaseController
         $user = $this->user->where('email', $email)->first();
 
         if (is_null($user)) {
-            return $this->respond(['error' => 'Invalid username or password.'], 401);
+            $response = [
+                'status' => 404,
+                'error' => false,
+                'message' => 'Invalid username or password',
+                'data' => []
+            ];
+            return $this->responseAllow($response);
         }
 
         $pwd_verify = password_verify($password, $user['password']);
 
         if (!$pwd_verify) {
-            return $this->respond(['error' => 'Invalid username or password.'], 401);
+            $response = [
+                'status' => 404,
+                'error' => false,
+                'message' => 'Invalid username or password',
+                'data' => []
+            ];
+            return $this->responseAllow($response);
         }
 
         $key = getenv('JWT_SECRET');
@@ -45,11 +60,15 @@ class AuthController extends BaseController
         $token = JWT::encode($payload, $key, 'HS256');
 
         $response = [
+            'status' => 200,
+            'error' => false,
             'message' => 'Login Succesful',
-            'token' => $token
+            'data' => [
+                'token' => $token,
+            ]
         ];
 
-        return $this->respond($response, 200);
+        return $this->responseAllow($response);
     }
     public function register()
     {
@@ -87,9 +106,11 @@ class AuthController extends BaseController
                 'status' => 200,
                 'error' => false,
                 'message' => 'User added successfully',
-                'token' => $token
+                'data' => [
+                    'token' => $token
+                ],
             ];
         }
-        return $this->respondCreated($response);
+        return $this->responseAllow($response);
     }
 }
