@@ -8,25 +8,17 @@ class Auth extends BaseResourceController
 {
      /**
       * @OA\Info(
-      *     description="This is a sample Opensid server.  You can find
-out more about Swagger at
-[http://swagger.io](http://swagger.io) or on
-[irc.freenode.net, #swagger](http://swagger.io/irc/).",
+      *     description="This is docs rest api simple blogs",
       *     version="1.0.0",
-      *     title="Swagger Opensid",
-      *     termsOfService="http://swagger.io/terms/",
+      *     title="MAXIMUM",
       *     @OA\Contact(
-      *         email="apiteam@swagger.io"
+      *         email="lintanglazuardi11@gmail.com",
       *     ),
-      *     @OA\License(
-      *         name="Apache 2.0",
-      *         url="http://www.apache.org/licenses/LICENSE-2.0.html"
-      *     )
       * )
       */
      /**	 
       * @OA\Server(
-      *     description="SwaggerHUB API Mocking",
+      *     description="Development Server",
       *     url="http://localhost:8080/api"
       * )
       */
