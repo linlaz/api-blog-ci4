@@ -37,7 +37,7 @@
     window.onload = function() {
       // Begin Swagger UI call region
       const ui = SwaggerUIBundle({
-        url: "<?= base_url('assets/coba.yaml') ?>",
+        url: "<?= base_url('assets/api.yaml') ?>",
         dom_id: '#swagger-ui',
         deepLinking: true,
         presets: [
