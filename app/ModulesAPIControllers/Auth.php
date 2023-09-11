@@ -19,7 +19,7 @@ class Auth extends BaseResourceController
      /**	 
       * @OA\Server(
       *     description="Development Server",
-      *     url="http://localhost:8080/api"
+      *     url= "/api"
       * )
       */
      /**
